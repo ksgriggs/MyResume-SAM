@@ -1,0 +1,38 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Resources:
+  ResumeConterDynamodb:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        -
+          AttributeName: "Site"
+          AttributeType: "N"
+      KeySchema:
+        -
+          AttributeName: "Site"
+          KeyType: "HASH"
+      ProvisionedThroughput:
+        ReadCapacityUnits: "1"
+        WriteCapacityUnits: "1"
+      TableName: "counter"
+
+  CounterFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: Lambda/
+      Handler: function.handler
+      Runtime: python3.8
+      Policies: AmazonDynamoDBFullAccess
+      Events:
+        HttpGet:
+          Type: Api
+          Properties:
+            Path: /counter
+            Method: get
+
+
+Outputs:
+  CounterApi:
+    Description: "API Gateway endpoint URL for Prod stage for Hello World function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/counter/"
