@@ -10,6 +10,15 @@ def handler(event, context):
     response = dynamodb.get_item(
         TableName='counter', Key={'Site': {'N': '0'}})
 
+    # If the item does not exist, create it.
+    if 'Item' not in response:
+        dynamodb.put_item(TableName='counter', Item={
+            'Site': {'N': '0'},
+            'Visits': {'N': '0'}
+        })
+        response = dynamodb.get_item(
+            TableName='counter', Key={'Site': {'N': '0'}})
+
     visits = int(response["Item"]["Visits"]["N"]) + 1
 
     # Store Visits
