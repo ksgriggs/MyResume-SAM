@@ -21,7 +21,7 @@ jobs:
           aws_region: 'us-east-1'
 
       - name: sam build
-        uses: youyou/aws-sam-action/python3.8@master
+        uses: youyo/aws-sam-action/python3.8@master
         with:
           sam_command: build
         env:
