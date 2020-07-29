@@ -1,7 +1,7 @@
 import json
 import boto3
 
-#TODO Rewrite using boto3.resource
+
 def handler(event, context):
     '''When this function is invoked - retrieve visitor count,
     add one, store in dynamodb, return to client.'''
