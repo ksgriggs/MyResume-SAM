@@ -1,6 +1,6 @@
 name: Manually triggered workflow
 on:
-  workflow_dispatch:
+  push
 
 jobs:
   aws_sam:
