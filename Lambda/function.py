@@ -3,8 +3,8 @@ import boto3
 
 
 def handler(event, context):
-    """When this function is invoked - retrieve visitor count,
-    add one, store in dynamodb, return to client."""
+    # When this function is invoked - retrieve visitor count,
+    # add one, store in dynamodb, return to client.
     dynamodb = boto3.client('dynamodb')
 
     # Get Visits
