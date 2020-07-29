@@ -7,4 +7,3 @@ s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-hz2o1edsxucr"
 s3_prefix = "myresume-app"
 region = "us-east-1"
 capabilities = "CAPABILITY_IAM"
-
