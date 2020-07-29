@@ -1,3 +1,4 @@
+import json
 import boto3
 
 dynamodb = boto3.resource('dynamodb')
@@ -20,13 +21,22 @@ def lambda_handler(event, context):
             }
         )
         # Read table again
-        table.get_item(
+        response = table.get_item(
             Key={
                 'Site': 0
             }
         )
 
-    visits = int(response['Item']['Visits'])
+    # Increment Visits and store it
+    visits = int(response['Item']['Visits']) + 1
+
+    table.put_item(
+        Item={
+            'Site': 0,
+            'Visits': str(visits)
+        }
+    )
+
     return {
         'statusCode': 200,
         'body': visits,
