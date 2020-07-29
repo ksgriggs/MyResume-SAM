@@ -10,15 +10,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Cloudformation delete stack
-        uses: mdecoleman/cloudformation-changeset@v1
-        with:
-          method: delete
-          stack_name: "myresume-app"
+#      - name: Cloudformation delete stack
+#        uses: mdecoleman/cloudformation-changeset@v1
+#        with:
+#          method: delete
+#          stack_name: "myresume-app"
 #          changeset_name: ""
-          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws_region: 'us-east-1'
+#          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#          aws_region: 'us-east-1'
 
       - name: sam build
         uses: youyo/aws-sam-action/python3.8@master
