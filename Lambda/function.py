@@ -1,4 +1,3 @@
-import json
 import boto3
 
 dynamodb = boto3.resource('dynamodb')
@@ -33,7 +32,7 @@ def lambda_handler(event, context):
     table.put_item(
         Item={
             'Site': 0,
-            'Visits': str(visits)
+            'Visits': visits
         }
     )
 
