@@ -1,5 +1,6 @@
 import boto3
 import os
+import decimal
 
 table_name = os.environ['TABLE_NAME']
 
@@ -8,36 +9,18 @@ table = dynamodb.Table(table_name)
 
 
 def lambda_handler(event, context):
-    response = table.get_item(
+    response = table.update_item(
         Key={
             'Site': 0
-        }
+        },
+        UpdateExpression="add Visits :val",
+        ExpressionAttributeValues={
+            ':val': decimal.Decimal(1)
+        },
+        ReturnValues='UPDATED_NEW'
     )
 
-    if 'Item' not in response:
-        # Create Item
-        table.put_item(
-            Item={
-                'Site': 0,
-                'Visits': 0
-            }
-        )
-        # Read table again
-        response = table.get_item(
-            Key={
-                'Site': 0
-            }
-        )
-
-    # Increment Visits and store it
-    visits = int(response['Item']['Visits']) + 1
-
-    table.put_item(
-        Item={
-            'Site': 0,
-            'Visits': visits
-        }
-    )
+    visits = int(response['Attributes']['Visits'])
 
     return {
         'statusCode': 200,
