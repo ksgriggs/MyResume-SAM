@@ -22,7 +22,9 @@ Resources:
       Environment:
         Variables:
           TABLE_NAME: !Ref DynamoDBTable
-      Policies: AmazonDynamoDBFullAccess
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !ref DynamoDBTable
       Events:
         HttpGet:
           Type: Api
