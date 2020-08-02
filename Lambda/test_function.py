@@ -1,55 +1,51 @@
-import boto3
 from moto import mock_dynamodb2
 from function import lambda_handler
-from unittest import TestCase
+import boto3
 
 
-class TestDynamo(TestCase):
+# Using moto to mock AWS resources
+@mock_dynamodb2
+def test_lambda_handler():
+    table_name = 'counter'
+    dynamodb = boto3.resource('dynamodb', 'us-east-1')
 
-    def setUp(self):
-        pass
+    # Create our mock DynamoDB table
+    table = dynamodb.create_table(
+        TableName=table_name,
+        KeySchema=[
+            {
+                'AttributeName': 'Site',
+                'KeyType': 'HASH'
+            },
+        ],
+        AttributeDefinitions=[
+            {
+                'AttributeName': 'Site',
+                'AttributeType': 'N'
+            },
 
-    # Using moto to mock AWS resources
-    @mock_dynamodb2
-    def test_lambda_handler(self):
-        table_name = 'counter'
-        dynamodb = boto3.resource('dynamodb', 'us-east-1')
+        ],
+        ProvisionedThroughput={
+            'ReadCapacityUnits': 5,
+            'WriteCapacityUnits': 5
+        }
+    )
 
-        # Create our mock DynamoDB table
-        table = dynamodb.create_table(
-            TableName=table_name,
-            KeySchema=[
-                {
-                    'AttributeName': 'Site',
-                    'KeyType': 'HASH'
-                },
-            ],
-            AttributeDefinitions=[
-                {
-                    'AttributeName': 'Site',
-                    'AttributeType': 'N'
-                },
+    # Put some data into our table
+    table.put_item(Item={
+        'Site': 0,
+        'Visits': 0
+        }
+    )
 
-            ],
-            ProvisionedThroughput={
-                'ReadCapacityUnits': 5,
-                'WriteCapacityUnits': 5
-            }
-        )
+    # Call our lambda_handler and let it run against our mock AWS resources
+    # It should return this:
+    # {'statusCode': 200,
+    #  'body': 1,
+    #  'headers': {'Content-Type': 'applications/json', 'Access-Control-Allow-Origin': '*'}
+    # }
+    result = lambda_handler("", "")
 
-        # Put some data into our table
-        table.put_item(Item={
-            'Site': 0,
-            'Visits': 0
-            }
-        )
-
-        # Call our lambda_handler and let it run against our mock AWS resources
-        # It should return this:
-        # {'statusCode': 200,
-        #  'body': 1,
-        #  'headers': {'Content-Type': 'applications/json', 'Access-Control-Allow-Origin': '*'}
-        # }
-        result = lambda_handler("", "")
-
-        self.assertEqual(result['body'], 1)
+    assert result['statusCode'] == 200
+    assert 'headers' in result
+    assert result['body'] == 1
