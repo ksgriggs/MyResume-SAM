@@ -1,2 +1,4 @@
-/.aws-sam/
+.aws-sam
 .env
+Lambda/.pytest_cache
+venv
