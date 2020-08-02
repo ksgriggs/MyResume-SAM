@@ -1,12 +1,13 @@
 from moto import mock_dynamodb2
 from function import lambda_handler
 import boto3
+import os
 
 
 # Using moto to mock AWS resources
 @mock_dynamodb2
 def test_lambda_handler():
-    table_name = 'counter'
+    table_name = os.environ['TABLE_NAME']
     dynamodb = boto3.resource('dynamodb', 'us-east-1')
 
     # Create our mock DynamoDB table
