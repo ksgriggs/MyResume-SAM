@@ -2,3 +2,4 @@
 .env
 Lambda/.pytest_cache
 venv
+.idea
