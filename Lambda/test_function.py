@@ -26,10 +26,7 @@ def test_lambda_handler():
             },
 
         ],
-        ProvisionedThroughput={
-            'ReadCapacityUnits': 5,
-            'WriteCapacityUnits': 5
-        }
+        BillingMode='PAY_PER_REQUEST'
     )
 
     # Put some data into our table
